@@ -43,7 +43,6 @@ local Config = {
     FlySpeed = 30,
     InfinityJump = false,
     Noclip = false,
-    PlayerCollision = false,
     AntiPing = false,
     FOV = 120,
     HitChance = 100,
@@ -331,7 +330,6 @@ local Categories = {
     {"Combat", "A"},
     {"Visuals", "V"},
     {"Movement", "M"},
-    {"Troll", "T"},
     {"Misc", "O"},
     {"Performance", "P"},
     {"Config", "C"}
@@ -778,41 +776,6 @@ updateContent = function()
         createToggle(panel, "NoClip", 315,
             function() return Config.Noclip end,
             function(v) Config.Noclip = v end)
-
-    elseif CurrentCategory == "Troll" then
-        panel = createPanel("Troll / Physics", 245)
-
-        createToggle(panel, "Player Collision", 36,
-            function() return Config.PlayerCollision end,
-            function(v) Config.PlayerCollision = v end)
-
-        local info = Instance.new("TextLabel")
-        info.Size = UDim2.new(1, -20, 0, 92)
-        info.Position = UDim2.fromOffset(10, 82)
-        info.BackgroundTransparency = 1
-        info.TextWrapped = true
-        info.TextColor3 = Color3.fromRGB(145, 150, 158)
-        info.Font = Enum.Font.Gotham
-        info.TextSize = 9
-        info.TextXAlignment = Enum.TextXAlignment.Left
-        info.TextYAlignment = Enum.TextYAlignment.Top
-        info.Text = "Player Collision включает физическую коллизию твоего персонажа, чтобы обычный контакт мог отталкивать других игроков.
-
-Fling: надёжный Fling игроков нельзя корректно сделать только этим LocalScript. Для своей игры нужен серверный импульс через Script, иначе клиент может рассинхронизироваться или получить откат позиции."
-        info.Parent = panel
-
-        local warn = Instance.new("TextLabel")
-        warn.Size = UDim2.new(1, -20, 0, 42)
-        warn.Position = UDim2.fromOffset(10, 180)
-        warn.BackgroundTransparency = 1
-        warn.TextWrapped = true
-        warn.TextColor3 = Color3.fromRGB(210, 170, 90)
-        warn.Font = Enum.Font.GothamMedium
-        warn.TextSize = 9
-        warn.TextXAlignment = Enum.TextXAlignment.Left
-        warn.TextYAlignment = Enum.TextYAlignment.Top
-        warn.Text = "Важно: Collision не телепортирует персонажа и не меняет CFrame других игроков."
-        warn.Parent = panel
 
     elseif CurrentCategory == "Misc" then
         panel = createPanel("Lighting", 220)
@@ -1589,18 +1552,13 @@ RunService.RenderStepped:Connect(function(deltaTime)
                         OriginalCollision[part] = part.CanCollide
                     end
                     part.CanCollide = false
-                elseif Config.PlayerCollision then
-                    if OriginalCollision[part] == nil then
-                        OriginalCollision[part] = part.CanCollide
-                    end
-                    part.CanCollide = true
                 elseif OriginalCollision[part] ~= nil then
                     part.CanCollide = OriginalCollision[part]
                     OriginalCollision[part] = nil
                 end
             end
         end
-    elseif not Config.Noclip and not Config.PlayerCollision and next(OriginalCollision) then
+    elseif not Config.Noclip and next(OriginalCollision) then
         for part, wasCollidable in pairs(OriginalCollision) do
             if part and part.Parent then part.CanCollide = wasCollidable end
             OriginalCollision[part] = nil
