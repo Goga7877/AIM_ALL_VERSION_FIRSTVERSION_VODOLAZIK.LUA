@@ -189,6 +189,8 @@ ScreenGui.Name = "VodoLazikInterface"
 ScreenGui.ResetOnSpawn = false
 ScreenGui.IgnoreGuiInset = true
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+ScreenGui.DisplayOrder = 9999
+ScreenGui.Enabled = true
 local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
 
 ScreenGui.Parent = PlayerGui
@@ -201,7 +203,7 @@ Main.AnchorPoint = Vector2.new(0.5, 0.5)
 Main.Position = UDim2.fromScale(0.5, 0.5)
 Main.BackgroundColor3 = Color3.fromRGB(13, 15, 18)
 Main.BackgroundTransparency = 0.03
-Main.Visible = false
+Main.Visible = true
 Main.ClipsDescendants = true
 Main.Parent = ScreenGui
 
@@ -880,7 +882,7 @@ updateContent()
 
 --// OPEN BUTTON + LOCK/RESPAWN CONTROLS
 -- Forward declarations: the open button is created before the menu-control section.
-local MenuOpen = false
+local MenuOpen = true
 local openMenu, closeMenu, toggleMenu
 
 local function loadOpenButtonPosition()
@@ -944,6 +946,9 @@ OpenButton.TextColor3 = Color3.fromRGB(0, 180, 240)
 OpenButton.Font = Enum.Font.GothamBold
 OpenButton.TextSize = 18
 OpenButton.AutoButtonColor = false
+OpenButton.Active = true
+OpenButton.Visible = true
+OpenButton.ZIndex = 100
 OpenButton.Parent = ScreenGui
 
 local OpenCorner = Instance.new("UICorner")
@@ -964,6 +969,8 @@ ButtonControl.Position = UDim2.new(0, DEFAULT_BUTTON_X, 1, -(DEFAULT_BUTTON_Y_FR
 ButtonControl.BackgroundColor3 = Color3.fromRGB(15, 20, 25)
 ButtonControl.BackgroundTransparency = 0.04
 ButtonControl.BorderSizePixel = 0
+ButtonControl.Visible = true
+ButtonControl.ZIndex = 99
 ButtonControl.Parent = ScreenGui
 
 local ControlCorner = Instance.new("UICorner")
