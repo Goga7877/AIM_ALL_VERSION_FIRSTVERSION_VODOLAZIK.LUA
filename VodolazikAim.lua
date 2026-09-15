@@ -1,5 +1,5 @@
 --[[
-    DEV AIM / ESP / FULLBRIGHT
+    VodoLazik AIM / ESP / FULLBRIGHT
     Roblox Luau - mobile friendly
 
     Changes in this version:
@@ -13,7 +13,6 @@
     • Sliders are touch friendly
     • FOV circle stays centered and resizes correctly
     • Optional executor file configs are kept
-    • VodoLazik branding + Anti-Ping performance mode
 
     For testing in your own Roblox experience.
     LocalScript -> StarterPlayer > StarterPlayerScripts
@@ -54,6 +53,7 @@ local Config = {
     FOVThickness = 2,
 
     ESPBox = true,
+    ESPHealth = false,
     ESPChams = false,
     ESPTracer = false,
     ESPColor = Color3.fromRGB(0, 170, 255),
@@ -73,7 +73,7 @@ for key, value in pairs(Config) do
 end
 
 --// FILE CONFIG
-local CONFIG_FOLDER = "DevAimConfigs"
+local CONFIG_FOLDER = "VodoLazikConfigs"
 local LAST_CONFIG_FILE = CONFIG_FOLDER .. "/last.txt"
 local BUTTON_POSITION_FILE = CONFIG_FOLDER .. "/button_position.json"
 local BUTTON_LOCK_FILE = CONFIG_FOLDER .. "/button_lock.txt"
@@ -186,11 +186,13 @@ end
 
 --// GUI ROOT
 local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "DevAimInterface"
+ScreenGui.Name = "VodoLazikInterface"
 ScreenGui.ResetOnSpawn = false
 ScreenGui.IgnoreGuiInset = true
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-ScreenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
+local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
+
+ScreenGui.Parent = PlayerGui
 
 --// MAIN MENU
 local Main = Instance.new("Frame")
@@ -277,10 +279,9 @@ Title.Size = UDim2.fromOffset(130, 28)
 Title.Position = UDim2.new(0.5, -65, 0, 10)
 Title.BackgroundTransparency = 1
 Title.Text = "VodoLazik"
-Title.TextColor3 = Color3.fromRGB(245, 245, 245)
+Title.TextColor3 = Color3.fromRGB(70, 190, 255)
 Title.Font = Enum.Font.GothamBold
 Title.TextSize = 16
-Title.TextColor3 = Color3.fromRGB(70, 190, 255)
 Title.Parent = Top
 
 local Close = Instance.new("TextButton")
@@ -833,14 +834,14 @@ Fling: надёжный Fling игроков нельзя корректно с�
             function(v) Config.Fog = v end)
 
     elseif CurrentCategory == "Performance" then
-        panel = createPanel("Performance / Anti-Ping", 250)
+        panel = createPanel("Performance / Anti-Ping", 245)
 
         createToggle(panel, "Anti-Ping", 36,
             function() return Config.AntiPing end,
             function(v) Config.AntiPing = v end)
 
         local info = Instance.new("TextLabel")
-        info.Size = UDim2.new(1, -20, 0, 110)
+        info.Size = UDim2.new(1, -20, 0, 105)
         info.Position = UDim2.fromOffset(10, 82)
         info.BackgroundTransparency = 1
         info.TextWrapped = true
@@ -849,7 +850,7 @@ Fling: надёжный Fling игроков нельзя корректно с�
         info.TextSize = 9
         info.TextXAlignment = Enum.TextXAlignment.Left
         info.TextYAlignment = Enum.TextYAlignment.Top
-        info.Text = "Anti-Ping уменьшает лишнюю клиентскую нагрузку: реже обновляет ESP и не выполняет тяжёлые визуальные обновления без необходимости.\n\nВажно: настоящий сетевой ping зависит от соединения и сервера. Клиентский скрипт не может физически уменьшить задержку до сервера."
+        info.Text = "Anti-Ping снижает лишнюю нагрузку от самого интерфейса и ESP.\n\nОн уменьшает частоту тяжёлых визуальных обновлений, когда функция включена.\n\nВажно: настоящий сетевой ping зависит от сервера и интернет-соединения. Клиентский скрипт не может физически уменьшить задержку до сервера."
         info.Parent = panel
 
     elseif CurrentCategory == "Config" then
@@ -975,10 +976,10 @@ else
     OpenButton.Position = UDim2.new(0, DEFAULT_BUTTON_X, 1, -DEFAULT_BUTTON_Y_FROM_BOTTOM)
 end
 OpenButton.BackgroundColor3 = Color3.fromRGB(18, 23, 28)
-OpenButton.Text = "≡"
+OpenButton.Text = "V"
 OpenButton.TextColor3 = Color3.fromRGB(0, 180, 240)
 OpenButton.Font = Enum.Font.GothamBold
-OpenButton.TextSize = 21
+OpenButton.TextSize = 18
 OpenButton.AutoButtonColor = false
 OpenButton.Parent = ScreenGui
 
@@ -1169,7 +1170,7 @@ local function makeESPData(key)
     local data = {}
 
     data.highlight = Instance.new("Highlight")
-    data.highlight.Name = "DevAimChams"
+    data.highlight.Name = "VodoLazikChams"
     data.highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
     data.highlight.FillTransparency = 0.72
     data.highlight.OutlineTransparency = 0
@@ -1177,7 +1178,7 @@ local function makeESPData(key)
     data.highlight.Parent = ScreenGui
 
     data.box = Instance.new("Frame")
-    data.box.Name = "DevAim2DBox"
+    data.box.Name = "VodoLazik2DBox"
     data.box.BackgroundTransparency = 1
     data.box.BorderSizePixel = 0
     data.box.Visible = false
@@ -1192,7 +1193,7 @@ local function makeESPData(key)
     end
 
     data.tracer = Instance.new("Frame")
-    data.tracer.Name = "DevAimTracer"
+    data.tracer.Name = "VodoLazikTracer"
     data.tracer.AnchorPoint = Vector2.new(0.5, 0.5)
     data.tracer.BorderSizePixel = 0
     data.tracer.Size = UDim2.fromOffset(0, 1)
