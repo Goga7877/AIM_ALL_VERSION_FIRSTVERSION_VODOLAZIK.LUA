@@ -265,6 +265,7 @@ end)
 --// TOP BAR
 local Top = Instance.new("Frame")
 Top.Size = UDim2.new(1, 0, 0, 48)
+Top.ZIndex = 90
 Top.BackgroundTransparency = 1
 Top.Parent = Main
 
@@ -917,39 +918,40 @@ end
 updateContent()
 
 --// VodoLazikHub FPS PANEL / MENU BUTTON
--- The whole panel is the button. No extra "V" button and no "press for menu" text.
+-- Compact draggable FPS/menu button. Tap = menu, drag = move.
 local MenuOpen = false
 local openMenu, closeMenu, toggleMenu
 
 local FPSPanel = Instance.new("TextButton")
 FPSPanel.Name = "VodoLazikFPSPanel"
-FPSPanel.Size = UDim2.fromOffset(330, 58)
-FPSPanel.Position = UDim2.new(0, 18, 1, -78)
+FPSPanel.Size = UDim2.fromOffset(235, 42)
+FPSPanel.Position = UDim2.new(0, 12, 1, -54)
 FPSPanel.AnchorPoint = Vector2.new(0, 0)
-FPSPanel.BackgroundColor3 = Color3.fromRGB(9, 13, 18)
+FPSPanel.BackgroundColor3 = Color3.fromRGB(10, 14, 19)
 FPSPanel.BackgroundTransparency = 0.04
 FPSPanel.BorderSizePixel = 0
 FPSPanel.Text = ""
 FPSPanel.AutoButtonColor = false
+FPSPanel.Active = true
 FPSPanel.ClipsDescendants = true
 FPSPanel.ZIndex = 50
 FPSPanel.Parent = ScreenGui
 
 local FPSPanelCorner = Instance.new("UICorner")
-FPSPanelCorner.CornerRadius = UDim.new(0, 13)
+FPSPanelCorner.CornerRadius = UDim.new(0, 9)
 FPSPanelCorner.Parent = FPSPanel
 
 local FPSPanelStroke = Instance.new("UIStroke")
-FPSPanelStroke.Color = Color3.fromRGB(0, 150, 255)
-FPSPanelStroke.Thickness = 2
-FPSPanelStroke.Transparency = 0.08
+FPSPanelStroke.Color = Color3.fromRGB(0, 145, 255)
+FPSPanelStroke.Thickness = 1.5
+FPSPanelStroke.Transparency = 0.05
 FPSPanelStroke.Parent = FPSPanel
 
 local FPSGlow = Instance.new("Frame")
 FPSGlow.Name = "Glow"
-FPSGlow.Size = UDim2.new(1, -10, 0, 2)
-FPSGlow.Position = UDim2.fromOffset(5, 3)
-FPSGlow.BackgroundColor3 = Color3.fromRGB(0, 185, 255)
+FPSGlow.Size = UDim2.new(1, -12, 0, 2)
+FPSGlow.Position = UDim2.fromOffset(6, 2)
+FPSGlow.BackgroundColor3 = Color3.fromRGB(0, 180, 255)
 FPSGlow.BorderSizePixel = 0
 FPSGlow.ZIndex = 51
 FPSGlow.Parent = FPSPanel
@@ -960,13 +962,13 @@ FPSGlowCorner.Parent = FPSGlow
 
 local HubTitle = Instance.new("TextLabel")
 HubTitle.Name = "HubTitle"
-HubTitle.Size = UDim2.new(1, -112, 1, 0)
-HubTitle.Position = UDim2.fromOffset(18, 0)
+HubTitle.Size = UDim2.new(1, -95, 1, 0)
+HubTitle.Position = UDim2.fromOffset(12, 0)
 HubTitle.BackgroundTransparency = 1
 HubTitle.Text = "VodoLazikHub"
 HubTitle.TextColor3 = Color3.fromRGB(55, 150, 255)
 HubTitle.Font = Enum.Font.GothamBold
-HubTitle.TextSize = 19
+HubTitle.TextSize = 14
 HubTitle.TextXAlignment = Enum.TextXAlignment.Left
 HubTitle.TextYAlignment = Enum.TextYAlignment.Center
 HubTitle.ZIndex = 52
@@ -974,146 +976,154 @@ HubTitle.Parent = FPSPanel
 
 local Divider = Instance.new("Frame")
 Divider.Name = "Divider"
-Divider.Size = UDim2.fromOffset(2, 34)
-Divider.Position = UDim2.new(1, -101, 0.5, -17)
-Divider.BackgroundColor3 = Color3.fromRGB(35, 150, 255)
-Divider.BackgroundTransparency = 0.1
+Divider.Size = UDim2.fromOffset(1, 25)
+Divider.Position = UDim2.new(1, -88, 0.5, -12)
+Divider.BackgroundColor3 = Color3.fromRGB(35, 130, 220)
+Divider.BackgroundTransparency = 0.15
 Divider.BorderSizePixel = 0
 Divider.ZIndex = 52
 Divider.Parent = FPSPanel
 
 local FPSCaption = Instance.new("TextLabel")
 FPSCaption.Name = "FPSCaption"
-FPSCaption.Size = UDim2.fromOffset(72, 18)
-FPSCaption.Position = UDim2.new(1, -91, 0, 8)
+FPSCaption.Size = UDim2.fromOffset(34, 15)
+FPSCaption.Position = UDim2.new(1, -79, 0, 5)
 FPSCaption.BackgroundTransparency = 1
 FPSCaption.Text = "FPS:"
-FPSCaption.TextColor3 = Color3.fromRGB(190, 200, 215)
+FPSCaption.TextColor3 = Color3.fromRGB(175, 185, 200)
 FPSCaption.Font = Enum.Font.GothamBold
-FPSCaption.TextSize = 11
+FPSCaption.TextSize = 9
 FPSCaption.TextXAlignment = Enum.TextXAlignment.Left
 FPSCaption.ZIndex = 52
 FPSCaption.Parent = FPSPanel
 
 local FPSLabel = Instance.new("TextLabel")
 FPSLabel.Name = "FPSValue"
-FPSLabel.Size = UDim2.fromOffset(78, 28)
-FPSLabel.Position = UDim2.new(1, -92, 0, 22)
+FPSLabel.Size = UDim2.fromOffset(55, 19)
+FPSLabel.Position = UDim2.new(1, -79, 0, 18)
 FPSLabel.BackgroundTransparency = 1
 FPSLabel.Text = "--"
 FPSLabel.TextColor3 = Color3.fromRGB(20, 170, 255)
 FPSLabel.Font = Enum.Font.GothamBlack
-FPSLabel.TextSize = 20
+FPSLabel.TextSize = 15
 FPSLabel.TextXAlignment = Enum.TextXAlignment.Left
 FPSLabel.ZIndex = 52
 FPSLabel.Parent = FPSPanel
 
-local FPSHint = Instance.new("TextLabel")
-FPSHint.Name = "FPSHint"
-FPSHint.Size = UDim2.fromOffset(8, 8)
-FPSHint.Position = UDim2.new(1, -12, 0.5, -4)
-FPSHint.BackgroundColor3 = Color3.fromRGB(0, 180, 255)
-FPSHint.BorderSizePixel = 0
-FPSHint.ZIndex = 52
-FPSHint.Parent = FPSPanel
+local FPSDot = Instance.new("Frame")
+FPSDot.Name = "FPSDot"
+FPSDot.Size = UDim2.fromOffset(6, 6)
+FPSDot.Position = UDim2.new(1, -12, 0.5, -3)
+FPSDot.BackgroundColor3 = Color3.fromRGB(0, 180, 255)
+FPSDot.BorderSizePixel = 0
+FPSDot.ZIndex = 52
+FPSDot.Parent = FPSPanel
 
-local FPSHintCorner = Instance.new("UICorner")
-FPSHintCorner.CornerRadius = UDim.new(1, 0)
-FPSHintCorner.Parent = FPSHint
+local FPSDotCorner = Instance.new("UICorner")
+FPSDotCorner.CornerRadius = UDim.new(1, 0)
+FPSDotCorner.Parent = FPSDot
 
--- Responsive sizing for phones.
+local fpsPanelDragging = false
+local fpsPanelMoved = false
+local fpsDragStart = nil
+local fpsStartPosition = nil
+
 local function updateFPSPanelSize()
     local viewport = Camera.ViewportSize
-    local width = math.clamp(viewport.X * 0.82, 260, 390)
-    local height = math.clamp(viewport.Y * 0.075, 52, 64)
+    local width = math.clamp(viewport.X * 0.58, 205, 245)
+    local height = math.clamp(viewport.Y * 0.052, 38, 44)
     FPSPanel.Size = UDim2.fromOffset(width, height)
-    FPSPanel.Position = UDim2.new(0.5, -width / 2, 1, -height - math.max(18, viewport.Y * 0.035))
-    HubTitle.TextSize = math.clamp(height * 0.33, 16, 21)
-    FPSCaption.TextSize = math.clamp(height * 0.19, 10, 12)
-    FPSLabel.TextSize = math.clamp(height * 0.34, 18, 23)
+
+    if not fpsPanelDragging then
+        local x = math.clamp(FPSPanel.Position.X.Offset, 0, math.max(viewport.X - width, 0))
+        local y = math.clamp(FPSPanel.Position.Y.Offset, 0, math.max(viewport.Y - height, 0))
+        FPSPanel.Position = UDim2.fromOffset(x, y)
+    end
+
+    HubTitle.TextSize = math.clamp(height * 0.34, 12, 15)
+    FPSCaption.TextSize = math.clamp(height * 0.22, 8, 10)
+    FPSLabel.TextSize = math.clamp(height * 0.37, 13, 16)
 end
 
-updateFPSPanelSize()
-
-local panelHoverTween
-local panelPressTween
-
-local function setPanelHighlight(active)
-    if panelHoverTween then panelHoverTween:Cancel() end
-    if panelPressTween then panelPressTween:Cancel() end
-    panelHoverTween = TweenService:Create(
-        FPSPanelStroke,
-        TweenInfo.new(0.12, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-        {Thickness = active and 3 or 2, Transparency = active and 0 or 0.08}
-    )
-    panelHoverTween:Play()
+local function clampFPSPanelPosition(x, y)
+    local viewport = Camera.ViewportSize
+    local maxX = math.max(viewport.X - FPSPanel.AbsoluteSize.X, 0)
+    local maxY = math.max(viewport.Y - FPSPanel.AbsoluteSize.Y, 0)
+    return math.clamp(x, 0, maxX), math.clamp(y, 0, maxY)
 end
 
-FPSPanel.MouseEnter:Connect(function()
-    setPanelHighlight(true)
+FPSPanel.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1
+        or input.UserInputType == Enum.UserInputType.Touch then
+        fpsPanelDragging = true
+        fpsPanelMoved = false
+        fpsDragStart = input.Position
+        fpsStartPosition = FPSPanel.Position
+    end
 end)
 
-FPSPanel.MouseLeave:Connect(function()
-    setPanelHighlight(false)
+UserInputService.InputChanged:Connect(function(input)
+    if not fpsPanelDragging then return end
+
+    if input.UserInputType == Enum.UserInputType.MouseMovement
+        or input.UserInputType == Enum.UserInputType.Touch then
+        local delta = input.Position - fpsDragStart
+        if delta.Magnitude > 5 then
+            fpsPanelMoved = true
+        end
+
+        local x, y = clampFPSPanelPosition(
+            fpsStartPosition.X.Offset + delta.X,
+            fpsStartPosition.Y.Offset + delta.Y
+        )
+        FPSPanel.Position = UDim2.fromOffset(x, y)
+    end
 end)
 
-FPSPanel.MouseButton1Down:Connect(function()
-    if panelPressTween then panelPressTween:Cancel() end
-    panelPressTween = TweenService:Create(
-        FPSPanel,
-        TweenInfo.new(0.06, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-        {BackgroundTransparency = 0.12}
-    )
-    panelPressTween:Play()
-end)
+UserInputService.InputEnded:Connect(function(input)
+    if not fpsPanelDragging then return end
 
-FPSPanel.MouseButton1Up:Connect(function()
-    if panelPressTween then panelPressTween:Cancel() end
-    panelPressTween = TweenService:Create(
-        FPSPanel,
-        TweenInfo.new(0.08, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-        {BackgroundTransparency = 0.04}
-    )
-    panelPressTween:Play()
+    if input.UserInputType == Enum.UserInputType.MouseButton1
+        or input.UserInputType == Enum.UserInputType.Touch then
+        fpsPanelDragging = false
+    end
 end)
 
 FPSPanel.Activated:Connect(function()
-    toggleMenu()
-end)
-
-UserInputService.InputBegan:Connect(function(input, processed)
-    if processed then
-        return
-    end
-
-    if input.KeyCode == Enum.KeyCode.Insert
-        or input.KeyCode == Enum.KeyCode.RightShift then
+    if not fpsPanelMoved then
         toggleMenu()
-    elseif input.KeyCode == Enum.KeyCode.X and MenuOpen then
-        closeMenu()
     end
+    fpsPanelMoved = false
 end)
+
+updateFPSPanelSize()
 
 --// REAL CLIENT FPS COUNTER
--- Counts actual RenderStepped frames on the client and updates the display twice per second.
+-- RenderStepped is used because it runs once per rendered client frame.
 local FPSFrames = 0
 local FPSElapsed = 0
 local FPSAccumulator = 0
-local LastFPS = 0
+local LastFPS = 60
 
 local function updateRealFPS(deltaTime)
+    if deltaTime <= 0 then return end
+
     FPSFrames += 1
     FPSElapsed += deltaTime
 
-    if FPSElapsed >= 0.5 then
+    if FPSElapsed >= 0.25 then
         local measured = FPSFrames / FPSElapsed
-        FPSAccumulator = FPSAccumulator * 0.65 + measured * 0.35
+        FPSAccumulator = FPSAccumulator == 0 and measured
+            or (FPSAccumulator * 0.55 + measured * 0.45)
         LastFPS = math.clamp(math.floor(FPSAccumulator + 0.5), 1, 999)
         FPSLabel.Text = tostring(LastFPS)
         FPSFrames = 0
         FPSElapsed = 0
     end
 end
+
+-- Keep the panel on-screen after resolution/orientation changes.
+Camera:GetPropertyChangedSignal("ViewportSize"):Connect(updateFPSPanelSize)
 
 --// FOV CIRCLE
 local FOVGui = Instance.new("Frame")
@@ -1516,7 +1526,9 @@ toggleMenu = function()
     end
 end
 
-Close.MouseButton1Click:Connect(closeMenu)
+Close.ZIndex = 100
+Close.Active = true
+Close.Activated:Connect(closeMenu)
 
 --// RENDER LOOP
 local LightingTimer = 0
@@ -1644,6 +1656,9 @@ RunService.RenderStepped:Connect(function(deltaTime)
 
     local viewport = camera.ViewportSize
     if viewport.X <= 1 or viewport.Y <= 1 then return end
+
+    -- REAL CLIENT FPS
+    updateRealFPS(deltaTime)
 
     -- FOV: outline only, no fill.
     FOVGui.Position = UDim2.fromOffset(viewport.X / 2, viewport.Y / 2)
@@ -1831,4 +1846,4 @@ end)
 updateLighting()
 updateMenuScale()
 
-Camera:GetPropertyChangedSignal("ViewportSize"):Connect(updateFPSPanelSize)
+
